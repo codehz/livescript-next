@@ -137,12 +137,23 @@ function map-values object, value
     result
 
 function chain-tail => it.key || it
+function chain-last => it.tails && last it.tails .key.name
+function prop-name
+  (it.left && prop-name it.left) || (it.it || it)value || chain-last it
 function expand-shorthand
   node = fix-prop it
-  if node.children.length < 1 || node.op
+  switch
+  | node.key && \Splat == node-type node.key
+    node.key <<< it: node.val
+  | \Prop == node-type node and !node.key
+    name = prop-name node.val
+    name || console.log node
+    val = if node.val.it then h \Literal value: true else node.val
+    node <<< {val, key: h \Key {name}}
+  | node.children.length < 1 || node.op
     value = if node.op then node else (h \Var value: node.name) <<< node
     h \Prop key: (chain-tail get-left node), val: value
-  else node
+  | _ => node
 
 transform.Obj = ->
   transform.Arr it <<< children: [it.children.0.map expand-shorthand]
@@ -175,15 +186,21 @@ function get-left => if it.op then it[it.children.0] else it
 
 function fix-prop
   key = it.children.0
-  if !it.op || \Prop != node-type it[key] then it
-  else it[key] <<< val: it <<< (key): it[key]val
+  switch
+  | it.val && \Obj == node-type it.val and !it.key
+    it <<< key: h \Key it.val{name}
+  | !it.op || \Prop != node-type it[key] => it
+  | _ => it[key] <<< val: it <<< (key): it[key]val
 
 function split-structure => switch
   | it.name => * temporary that; it <<< name: void
   | find-first it.items, destructure-named => split-named it, ...that
 
 function destructure-named node => switch
-  | node.val => destructure-named that ?.map -> clone node, val: it
+  | node.val
+    name = prop-name that or that.left?name
+    if name then node.key ||= h \Key {name}
+    destructure-named that ?.map -> clone node, val: it
   | node.op && destructure-named node[node.children.0]
     [left, right] = node.children
     cache-ref node[right], \default$ .reverse!map (ref, index) ->
@@ -191,6 +208,7 @@ function destructure-named node => switch
   | node.items => split-structure node <<< items: that.map fix-prop
 
 function restructure node, [head, rest]
+  rest.items.0.key ||= h \Key name: last head.items .val.left.value
   split-destructing node <<< children:
     [rest, binary-node \= head, node.children.1]
 
@@ -286,12 +304,15 @@ function unwrap-left => it <<< children: [it.children.0.it, it.children.1]
 function strip-soak => it.tails.0.soak = void; it
 function strip-symbol => it.tails.0.symbol = \.; it
 
-function pack-slice node, val => if node.val then node <<< {val} else val
+function pack-slice node, val
+  if \Prop == node-type node
+    node.key ||= h \Key name: (prop-name val or (val.left || val)key.name)
+  if node.val then node <<< {val} else val
 function bind-slice slice, target, object
   slice <<< items: slice.items.map (item, index) ->
     base = if index then object else target
-    key = item.val || get-left item
-    key <<< h \Key name: key.value if item.val && \Var == node-type key
+    key = if item.val && prop-name item.val then h \Key name: that
+    else item.val || item
     pack-slice item, if key.items then bind-slice key, base, object
     else replace-default item, h \Index {base, key}
 function unfold-slice target, children: [object, [key: slice, ...tails]]
@@ -490,7 +511,11 @@ function auto-return body, {init, bound, hushed}
   | _ => body
 
 function replace-default node, head
-  if node.op then node <<< lval: true (node.children.0): head else head
+  switch
+  | node.op => node <<< lval: true (node.children.0): head
+  | node.val?op
+    node.val <<< lval: true left: head
+  | _ => head
 
 function unfold-params
   [[head, rest] split] = that if find-first it, -> destructure-named get-left it

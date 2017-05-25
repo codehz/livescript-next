@@ -32,7 +32,7 @@ function babel-build filename, dest
     if err then reject that
     else resolve write dest, result.code
 
-external-deps = <[livescript babel-core babel-types]>
+external-deps = <[@dk00/livescript livescript babel-core babel-types]>
 globals =
   livescript: "require('livescript')"
   \babel-types : '''(() => {

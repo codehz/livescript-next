@@ -68,9 +68,9 @@ function main t
   t.deep-equal actual, expected, message
 
   message = 'nested slicing'
-  a = one-time-getter b: 0 e: 1 g: 2 h: 3 j: 4, message
+  a = one-time-getter b: 0 e: 1 g: 2 h: 3 j: 4 key: 5, message
   key = \b
-  expected = [0 0 c: 0 d: e: 1 f: [2 3] i: 4]
+  expected = [0 0 c: 5 d: e: 1 f: [2 3] i: 4]
   actual = a![\b, key, c: (key), d: {e, f: [\g, \h] i: j}]
   t.deep-equal actual, expected, message
 

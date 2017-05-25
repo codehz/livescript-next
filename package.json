@@ -19,17 +19,18 @@
   },
   "peerDependencies": {
     "babel-preset-stage-0": "",
-    "livescript": ""
+    "@dk00/livescript": ""
   },
   "devDependencies": {
     "babel-core": "",
+    "babel-plugin-external-helpers": "",
     "babel-plugin-istanbul": "",
     "babel-plugin-transform-es2015-modules-commonjs": "",
-    "babel-plugin-external-helpers": "",
     "babel-preset-stage-0": "",
     "babel-register": "",
     "gulp": "",
     "livescript": "",
+    "@dk00/livescript": "",
     "nyc": "",
     "object.entries": "",
     "rollup": "",

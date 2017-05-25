@@ -2,6 +2,15 @@
 # yarn lockfile v1
 
 
+"@dk00/livescript@":
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@dk00/livescript/-/livescript-1.5.1.tgz#5f537b4e0e48d986af8cbe6b4e3ed5100f15e95b"
+  dependencies:
+    optionator "~0.8.1"
+    prelude-ls "~1.1.2"
+    source-map "^0.5.6"
+    source-map-support "^0.4.11"
+
 align-text@^0.1.1, align-text@^0.1.3:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/align-text/-/align-text-0.1.4.tgz#0cd90a561093f35d0a99256c22b7069433fad117"
@@ -2034,7 +2043,7 @@ slide@^1.1.5:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/slide/-/slide-1.1.6.tgz#56eb027d65b4d2dce6cb2e2d32c4d4afc9e1d707"
 
-source-map-support@^0.4.0, source-map-support@^0.4.2:
+source-map-support@^0.4.0, source-map-support@^0.4.11, source-map-support@^0.4.2:
   version "0.4.11"
   resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.4.11.tgz#647f939978b38535909530885303daf23279f322"
   dependencies:

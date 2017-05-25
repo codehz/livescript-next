@@ -1,5 +1,5 @@
 import
-  livescript: {ast}
+  \@dk00/livescript : {ast}
   \./convert : convert
 
 # parse only .ls files. work around rollup preflightCheck
