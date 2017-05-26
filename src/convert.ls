@@ -147,11 +147,10 @@ function expand-shorthand
     node.key <<< it: node.val
   | \Prop == node-type node and !node.key
     name = prop-name node.val
-    name || console.log node
     val = if node.val.it then h \Literal value: true else node.val
     node <<< {val, key: h \Key {name}}
   | node.children.length < 1 || node.op
-    value = if node.op then node else (h \Var value: node.name) <<< node
+    value = (h \Var value: node.name) <<< node
     h \Prop key: (chain-tail get-left node), val: value
   | _ => node
 
@@ -185,12 +184,9 @@ function split-named dest, [head, rest] index
 function get-left => if it.op then it[it.children.0] else it
 
 function fix-prop
-  key = it.children.0
-  switch
-  | it.val && \Obj == node-type it.val and !it.key
+  if it.val && \Obj == node-type it.val and !it.key
     it <<< key: h \Key it.val{name}
-  | !it.op || \Prop != node-type it[key] => it
-  | _ => it[key] <<< val: it <<< (key): it[key]val
+  else it
 
 function split-structure => switch
   | it.name => * temporary that; it <<< name: void
@@ -208,7 +204,6 @@ function destructure-named node => switch
   | node.items => split-structure node <<< items: that.map fix-prop
 
 function restructure node, [head, rest]
-  rest.items.0.key ||= h \Key name: last head.items .val.left.value
   split-destructing node <<< children:
     [rest, binary-node \= head, node.children.1]
 
@@ -232,9 +227,6 @@ function transform-lval index=0 => (node) ->
 
 <[Arr Splat Existence]>forEach -> transform[it] = transform-lval!
 
-function transform-default node
-  next = set-type _, \Assign <| transform-lval! node
-  next <<< op: \=
 transform.Prop = transform-lval 1
 
 function convert-variable
@@ -388,7 +380,6 @@ function try-combine
 
 transform.Binary = (node) ->
   | node.children.some (-> !it) => partial-operator node
-  | node.lval => transform-default node
   | rewrite-binary[node.op] => that try-combine reverse-compose node
   | _ => node
 
@@ -510,11 +501,9 @@ function auto-return body, {init, bound, hushed}
     body
   | _ => body
 
-function replace-default node, head
-  switch
+function replace-default node, head => switch
   | node.op => node <<< lval: true (node.children.0): head
-  | node.val?op
-    node.val <<< lval: true left: head
+  | node.val?op => node.val <<< lval: true left: head
   | _ => head
 
 function unfold-params
@@ -704,7 +693,6 @@ literals\* = literals.void
 
 derive-property =
   ObjectProperty: pass
-  MemberExpression: -> t.property it.property, it
   SpreadElement: -> it <<< type: \SpreadProperty
 function convert-property => derive-property[it.type] it
 

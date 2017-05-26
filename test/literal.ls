@@ -7,6 +7,10 @@ function object t
   t.equal b.shorthand, shorthand, 'shorthand property'
   c = {\shorthand}
   t.equal c.shorthand, shorthand, 'shorthand string'
+  actual = {+bool}
+  expected = bool: true
+  t.deep-equal actual, expected, 'shorthand boolean'
+
   d = {(a.property): value}
   t.equal d.value, value, 'computed property'
   expected = {property: value, another: 1}
