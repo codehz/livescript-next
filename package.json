@@ -1,7 +1,7 @@
 {
   "name": "livescript-next",
   "description": "Enable latest ES features for LiveScript",
-  "version": "0.0.4",
+  "version": "0.1.0-beta.0",
   "main": "lib/index.js",
   "module": "dist/index.esm.js",
   "browser": "dist/index.js",
@@ -15,24 +15,19 @@
     "lib"
   ],
   "dependencies": {
-    "babel-types": ""
-  },
-  "peerDependencies": {
-    "babel-preset-stage-0": "",
-    "livescript": ""
+    "@babel/types": "^7.0.0-beta.32"
   },
   "devDependencies": {
-    "babel-core": "",
+    "@babel/core": "",
+    "@babel/plugin-transform-modules-commonjs": "",
+    "@babel/preset-stage-0": "",
+    "@babel/register": "",
     "babel-plugin-istanbul": "",
-    "babel-plugin-transform-es2015-modules-commonjs": "",
-    "babel-plugin-external-helpers": "",
-    "babel-preset-stage-0": "",
-    "babel-register": "",
+    "babel-plugin-livescript": "",
     "livescript": "",
-    "livescript-next": "",
     "nyc": "",
     "rollup": "",
-    "rollup-plugin-babel": "",
+    "rollup-plugin-babel": "next",
     "rollup-plugin-node-resolve": "",
     "tape": ""
   },

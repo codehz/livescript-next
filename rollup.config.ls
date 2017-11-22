@@ -12,9 +12,9 @@ target =
     * file: "lib/index.js" format: \cjs
   plugins:
     node-resolve jsnext: true extensions: <[.ls .js]>
-    babel require \./.babelrc
+    babel plugins: [\livescript]
   name: name
-  external: <[livescript babel-core babel-types]>
+  external: <[livescript @babel/types @babel/core]>
   exports: \named sourcemap: true use-strict: false
 
 export default: target

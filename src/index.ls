@@ -1,4 +1,3 @@
-export
-  \./convert : convert
-  \./parse : parse
-  \./compile : compile
+import \./convert : convert
+
+export default: convert, {convert}

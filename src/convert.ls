@@ -1,4 +1,4 @@
-import \babel-types : *: types
+import \@babel/types : *: types
 
 function L
   start: line: it.first_line, column: it.first_column
@@ -680,7 +680,7 @@ literals\* = literals.void
 derive-property =
   ObjectProperty: pass
   MemberExpression: -> t.property it.property, it
-  SpreadElement: -> it <<< type: \SpreadProperty
+  SpreadElement: -> it <<< type: \SpreadElement
 function convert-property => derive-property[it.type] it
 
 t.object = (properties) ->
@@ -732,9 +732,8 @@ t <<<
   ForOf: define \ForOfStatement \pass \expression \statement
 
 function convert root
-  program = convert-module root
-    ..type = \Program
-  t.file program, [] []
-    ..loc = program.loc
+  program = Object.assign {} (convert-module root),
+    type: \Program source-type: \module
+  Object.assign loc: program.loc, t.file program, [] []
 
 export default: convert
