@@ -15,19 +15,19 @@
     "lib"
   ],
   "dependencies": {
-    "@babel/types": "^7.0.0-beta.32"
+    "@babel/types": "^7"
   },
   "devDependencies": {
     "@babel/core": "",
     "@babel/plugin-transform-modules-commonjs": "",
-    "@babel/preset-stage-0": "",
     "@babel/register": "",
     "babel-plugin-istanbul": "",
     "babel-plugin-livescript": "",
-    "livescript": "",
+    "babel-preset-upcoming": "",
+    "livescript": "1.5.0",
     "nyc": "",
     "rollup": "",
-    "rollup-plugin-babel": "next",
+    "rollup-plugin-babel": "4.0.0-beta.8",
     "rollup-plugin-node-resolve": "",
     "tape": ""
   },

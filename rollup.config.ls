@@ -4,17 +4,19 @@ import
 
 {name} = require \./package.json
 
+function output file, format=\es
+  {file, format, name, exports: \named sourcemap: true use-strict: false}
+
 target =
   input: \src/index.ls
   output:
-    * file: "dist/index.esm.js" format: \es
-    * file: "dist/index.js" format: \umd
-    * file: "lib/index.js" format: \cjs
+    * output 'dist/index.esm.js'
+    * output 'dist/index.js' \umd
+    * output 'lib/index.js' \cjs
   plugins:
     node-resolve jsnext: true extensions: <[.ls .js]>
     babel {}
-  name: name
   external: <[livescript @babel/types @babel/core]>
-  exports: \named sourcemap: true use-strict: false
+
 
 export default: target
