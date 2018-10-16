@@ -1,11 +1,14 @@
 {ast} = require \livescript
-require \../register <| plugins: <[\istanbul \livescript]>
+{plugins} = require \../.babelrc
+require \../register <| plugins: <[\istanbul]>
 
 convert = require \../src/convert .default
 function parser-override code, {source-file-name}: options={} parse
   if /\.ls$/test options.source-file-name then convert (ast code), options
   else parse code, options
-require \../register <| plugins: [{parser-override}]
+
+options = babelrc: false plugins: [{parser-override}]concat plugins.slice 1
+require \../register <| options
 
 features =
   module: \Module
